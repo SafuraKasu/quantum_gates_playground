@@ -1,89 +1,103 @@
 # Quantum Gates Playground
 
-An interactive Streamlit-based simulator that lets you visualize quantum gate operations on a single qubit — and learn about quantum computing concepts along the way.
+**An interactive, single-qubit learning tool for understanding quantum gates through circuits, linear algebra, and Bloch-sphere visualizations.**
 
----
+Built with **Python, Streamlit, Qiskit, NumPy, and Matplotlib**.
 
-## What This Project Is
+## Demo
 
-This is not just a simulator — it's a **hands-on learning tool** for beginners in quantum computing. Choose a qubit state, apply quantum gates like Hadamard, Pauli-X, or phase gates, and watch how your qubit transforms on the Bloch sphere.
+![Quantum Gates Playground Demo](assets/demo.gif)
 
----
+## Why I built this
 
-## Features
+Quantum gates can sound abstract until you see what they do to a state vector. I built this project as a beginner-friendly way to connect three descriptions of the same operation: a quantum circuit, a matrix transformation, and a point on the Bloch sphere.
 
--  Choose an initial qubit state
--  Apply gates like H, X, Z, S, T, etc.
--  Visualize qubit state changes on a Bloch sphere
--  Get educational insights into what each gate does
--  Try suggested gate combinations and understand the outcomes
+The goal is educational, not to offer a full quantum-computing IDE or a new simulator.
 
----
+## What you can explore
 
-## Tech Stack
+- Choose a computational-basis initial state: **|0⟩** or **|1⟩**.
+- Apply one of six gates: **H, X, Y, Z, S, or T**.
+- View the corresponding single-qubit circuit and an explanation of the selected gate.
+- Inspect the gate matrix and the resulting state-vector calculation.
+- See the resulting state on the Bloch sphere.
 
-- [Streamlit](https://streamlit.io/) — UI and interaction
-- [Qiskit](https://qiskit.org/) — Quantum simulation and Bloch vector math
-- [Matplotlib / Plotly] — For Bloch sphere rendering
+**Try it:** Select **|0⟩**, choose the **Hadamard (H)** gate, and click **Apply Gate**. The matrix multiplication gives
 
----
+$$
+H|0\rangle = \frac{|0\rangle + |1\rangle}{\sqrt{2}}.
+$$
 
-## How to Run the App
-Follow the steps inorder to run the app.
+The Bloch-sphere view illustrates the corresponding change from a basis state to a superposition.
 
-### 1. Clone the repository
+**A useful subtlety:** With only |0⟩ and |1⟩ as initial states, phase gates such as Z, S, and T may leave the Bloch-sphere point visually unchanged. On these inputs they change only an overall phase, which is not observable in the Bloch-sphere representation. Their relative-phase effects become more apparent on superposition states.
 
-In your terminal, run the following command to clone the repository
-
-```bash
-git clone https://github.com/SasSwan06/quantum_gates_playground.git
-````
-
-### 2. Navigate to the cloned folder
-
-In your terminal, run the following command to navigate to the right folder.
+## Run locally
 
 ```bash
-cd quantum-gates-playground
-````
+git clone https://github.com/SafuraKasu/quantum_gates_playground.git
+cd quantum_gates_playground
+python -m venv .venv
+```
 
-### 3. Install dependencies
+Activate your environment:
 
-Run the following command in your terminal in order to install all the essential libraries and tools to successfully run the app.
+**Windows (PowerShell):**
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux:**
 
 ```bash
-pip install -r requirements.txt
-````
+source .venv/bin/activate
+```
 
-### 4. Run the Streamlit app
-Finally, run the following command in your terminal to run the app.
+Install dependencies and launch the app:
 
 ```bash
-streamlit run app.py
-````
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
+```
 
-## Learn as You Explore
-This app will gently guide you to learn:
+Streamlit will display a local URL for the app. The repository includes pinned dependencies; a clean installation across operating systems has not yet been independently verified.
 
-- What each gate does geometrically
-- How Bloch sphere rotations relate to gates
-- What the trannsformations look like mathemcatically.
+## How it works
 
+The app builds a **single-qubit `QuantumCircuit`** using Qiskit. Based on the selected input and gate, it displays:
 
-## Educational Goals
-This tool was created to:
+1. **Circuit:** The selected gate is applied to a newly constructed one-qubit circuit.
+2. **Linear algebra:** The relevant 2×2 gate matrix multiplies the selected basis-state vector, and the result is rendered in mathematical notation.
+3. **Visualization:** Qiskit's `Statevector` and Bloch-sphere plotting utilities visualize the state produced by the circuit.
 
-- Be a lightweight introduction to quantum gates and transformations.
-- Help students and enthusiasts develop geometric intuition
-- Make exploring quantum concepts fun and interactive
+### Repository guide
 
+| File | Purpose |
+| --- | --- |
+| `app.py` | Streamlit interface, user interactions, state display, and visualizations |
+| `gates.py` | Gate application helpers and matrix definitions |
+| `display_utils.py` | Math-display helpers |
+| `requirements.txt` | Python dependency list |
 
-## Contributing
-PRs, feedback, and feature ideas are welcome! Being a beginner myself, I'd especially appreciate suggestions to make the explanations clearer or more accurate.
-Please open an issue if you'd like to collaborate or improve the educational material; my goal is to make the app as educational as possible and I am open to feedback that will help me with the same.
+## Current scope and limitations
+
+This is an **educational prototype**:
+
+- The interface is limited to **one qubit** and computational-basis inputs.
+- Each interaction applies **one selected gate** to a newly created circuit; arbitrary gate sequences and persistent circuit-building are not implemented.
+- The app does not currently provide a general measurement or multi-qubit circuit workflow.
+- There is no automated test suite in the current repository.
+- Plus, the current explanations are not dynamic.
+
+![Quantum Gates Playground Screenshot](assets/image.png)
+
+Potential extensions include allowing arbitrary initial states, applying sequences of gates, adding measurements, and building multi-qubit circuits. These are ideas, **not implemented features**.
+
+## Motivation and learning
+
+This project grew out of my interest in mathematical and geometric intuition: I wanted to see how the same quantum operation appears algebraically, on a circuit, and on the Bloch sphere. The prototype focuses on making those connections approachable rather than hiding the mathematics.
 
 ## License
-MIT License
 
-## Author
-LinkedIn: https://www.linkedin.com/in/safura-kasu-544b50281/ Email: safurakasu@gmail.com
+Licensed under the [MIT License](LICENSE).
